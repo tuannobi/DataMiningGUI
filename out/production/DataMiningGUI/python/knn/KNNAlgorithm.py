@@ -97,11 +97,12 @@ class KNNAlgorithm:
             # knn.runKNNAlgorithm("D:\\Python\\DataMiningAlgorithms\\DataMiningAlgorithms\\data.csv",userRow)
 
     #Người dùng có thể nhập vào đường dẫn hoặc DataFrame    
-    def runKNNAlgorithm(self,filePath,userRow,isIndex):
+    def runKNNAlgorithm(self,filePath,userRow,k):
         self.__train=pd.read_csv(filePath)
-        if(isIndex==1):
-            self.__train.drop(self.__train.columns[0],axis=1,inplace=True)
-        self.__k=len(self.__train.index)
+        # if(isIndex==1):
+        #     self.__train.drop(self.__train.columns[0],axis=1,inplace=True)
+        # self.__k=len(self.__train.index)
+        self._k=int(k)
         print(int(math.sqrt(self.__k)))
         # self.__test=pd.read_csv(testfilePath)
         self.__classifyColumn()

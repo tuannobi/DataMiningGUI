@@ -2,15 +2,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import python.bayes.Bayes;
-import util.ReadFileUtil;
-import util.ScriptPython;
+import util.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -23,7 +25,10 @@ public class  Controller {
     private final Path datasetSavePathCSV= Paths.get("src\\python\\data.csv");
     private final Path datasetSavePathXLSX= Paths.get("src\\python\\data.xlsx");
     private final Path importFileSavePath= Paths.get("src\\python\\import.xlsx");
+    private final Path importTestFile=Paths.get("src\\python\\test.csv");
     private String selectedRadioMenuItem="";
+    private String result="";
+    private StringBuilder outputResult;
     private List<String> inputList;
     @FXML
     private MenuItem importMenuItem;
@@ -43,6 +48,10 @@ public class  Controller {
     private TableView tableView;
     @FXML
     private Button accuracyButton;
+    @FXML
+    private VBox classificationVbox;
+    @FXML
+    private Button testDataButton;
 
 
     public void importFileAction(ActionEvent actionEvent) throws IOException {
@@ -119,18 +128,76 @@ public class  Controller {
                         resultStringBuilder.append(line);
                         resultStringBuilder.append("\n");
                     }
+                    outputResult=new StringBuilder(resultStringBuilder);
                     resultTextArea.setText(resultStringBuilder.toString());
                     statusLable.setText("End "+selectedRadioMenuItem);
                     System.out.println("Ket thuc");
                     break;
                 case "Decision Tree":
+                    int type=1;
+                    CARTScriptPython cartScriptPython=new CARTScriptPython();
+                    TextInputDialog textInputDialog=new TextInputDialog();
+                    textInputDialog.setTitle("Input depth ");
+                    textInputDialog.setHeaderText("Input:");
+                    textInputDialog.showAndWait();
+                    int depth=Integer.parseInt(textInputDialog.getEditor().getText());
+                    List<String> lists=cartScriptPython.runScript("src\\python\\decisiontree\\cart_main.py",type,depth," ");
+                    StringBuilder stringBuilder1=new StringBuilder();
+                    for(String temp:lists){
+                        stringBuilder1.append(temp);
+                    }
+                    result=stringBuilder1.toString();
+                    outputResult=new StringBuilder(result);
+                    result = result.replace(" ", "##");
+                    System.out.println("ket qua: "+result );
+                    resultTextArea.setText(stringBuilder1.toString());
+                    statusLable.setText("End "+selectedRadioMenuItem);
                     break;
                 case "Forest Tree":
+                    int type2=1;
+                    RandomForestScriptPython randomForestScriptPython=new RandomForestScriptPython();
+                    TextInputDialog textInputDialog1=new TextInputDialog();
+                    textInputDialog1.setTitle("Trees ");
+                    textInputDialog1.setHeaderText("Input number of trees:");
+                    textInputDialog1.showAndWait();
+                    String numOfTree=textInputDialog1.getEditor().getText();
+
+                    TextInputDialog textInputDialog2=new TextInputDialog();
+                    textInputDialog2.setTitle("Bootstrap ");
+                    textInputDialog2.setHeaderText("Input number row in 1 tree:");
+                    textInputDialog2.showAndWait();
+                    String numOfRow=textInputDialog2.getEditor().getText();
+
+                    TextInputDialog textInputDialog3=new TextInputDialog();
+                    textInputDialog3.setTitle("Features ");
+                    textInputDialog3.setHeaderText("Input number of features:");
+                    textInputDialog3.showAndWait();
+                    String numOfFeatures=textInputDialog3.getEditor().getText();
+
+                    TextInputDialog textInputDialog4=new TextInputDialog();
+                    textInputDialog4.setTitle("Depth ");
+                    textInputDialog4.setHeaderText("Input max depth:");
+                    textInputDialog4.showAndWait();
+                    String numOfMaxDepth=textInputDialog4.getEditor().getText();
+
+                    String temp1=numOfTree+"/"+numOfRow+"/"+numOfFeatures+"/"+numOfMaxDepth;
+
+                    List<String> list1=randomForestScriptPython.runScript("src\\python\\randomforest\\random_forest_main.py",type2,0,temp1);
+                    StringBuilder stringBuilder2=new StringBuilder();
+                    for(String temp:list1){
+                        stringBuilder2.append(temp);
+                    }
+                    result=stringBuilder2.toString();
+                    outputResult=new StringBuilder(result);
+                    result = result.replace(" ", "##");
+                    System.out.println("ket qua: "+result );
+                    resultTextArea.setText(stringBuilder2.toString());
+                    statusLable.setText("End "+selectedRadioMenuItem);
                     break;
                 case "Bayes":
                     Bayes bayes=new Bayes();
-                    StringBuilder stringBuilder1 =bayes.runAlgorithm(inputList);
-                    resultTextArea.setText(stringBuilder1.toString());
+                    StringBuilder stringBuilder3=bayes.runAlgorithm(inputList);
+                    resultTextArea.setText(stringBuilder3.toString());
                     System.out.println("ket thuc");
                     statusLable.setText("End "+selectedRadioMenuItem);
                     break;
@@ -147,6 +214,7 @@ public class  Controller {
         RadioMenuItem radioMenuItem=(RadioMenuItem) group.getSelectedToggle();
         selectedRadioMenuItem=radioMenuItem.getText();
         statusLable.setText(selectedRadioMenuItem + " is selected");
+        //
     }
 
     public void chooseButtonAction() throws IOException {
@@ -186,6 +254,34 @@ public class  Controller {
 
     public void accuracyButtonAction(ActionEvent actionEvent){
         statusLable.setText("Calculating Accuracy...");
+        switch (selectedRadioMenuItem){
+            case "K-nearest Neighbor":
+                System.out.println("KNN");
+                break;
+            case "Forest Tree":
+                int type3=3;
+                RandomForestScriptPython randomForestScriptPython=new RandomForestScriptPython();
+                List<String> lists5=randomForestScriptPython.runScript("src\\python\\randomforest\\random_forest_main.py",type3,0,result);
+                StringBuilder stringBuilder5=new StringBuilder();
+                for(String temp:lists5){
+                    stringBuilder5.append(temp);
+                }
+                resultTextArea.setText(stringBuilder5.toString());
+                statusLable.setText("End "+selectedRadioMenuItem);
+                break;
+            case "Decision Tree":
+                int type=3;
+                CARTScriptPython cartScriptPython=new CARTScriptPython();
+                List<String> lists=cartScriptPython.runScript("src\\python\\decisiontree\\cart_main.py",type,0,result);
+                StringBuilder stringBuilder1=new StringBuilder();
+                for(String temp:lists){
+                    stringBuilder1.append(temp);
+                }
+                resultTextArea.setText(stringBuilder1.toString());
+                statusLable.setText("End "+selectedRadioMenuItem);
+                break;
+        }
+        statusLable.setText("End "+selectedRadioMenuItem);
     }
 
     private static String getFileExtension(File file) {
@@ -203,4 +299,78 @@ public class  Controller {
         return extension;
     }
 
+    public void testDataButtonAction(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser=new FileChooser();
+        fileChooser.setTitle("Open dataset");
+        fileChooser.getExtensionFilters().
+            addAll(new FileChooser.ExtensionFilter("CSV file","*.csv"));
+        File file=fileChooser.showOpenDialog(null);
+        statusLable.setText("Opening File...");
+        if(file!=null){
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("Import Successful!");
+            alert.show();
+            System.out.println(file.toPath());
+            Files.copy(file.toPath(),importTestFile, StandardCopyOption.REPLACE_EXISTING);
+        }else{
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText("Import Fail!");
+            alert.show();
+        }
+    }
+
+    public void classificationAction(ActionEvent actionEvent) {
+        switch (selectedRadioMenuItem){
+            case "K-nearest Neighbor":
+                System.out.println("KNN");
+                break;
+            case "Forest Tree":
+                int type=2;
+                CARTScriptPython cartScriptPython=new CARTScriptPython();
+                TextInputDialog textInputDialog=new TextInputDialog();
+                textInputDialog.setTitle("Predict");
+                textInputDialog.setHeaderText("Choose row you want to predict");
+                textInputDialog.showAndWait();
+                int stringInput=Integer.parseInt(textInputDialog.getEditor().getText());
+                System.out.println(result);
+                List<String> lists=cartScriptPython.runScript("src\\python\\randomforest\\random_forest_main.py",type,stringInput,result);
+                StringBuilder stringBuilder1=new StringBuilder();
+                for(String temp:lists){
+                    stringBuilder1.append(temp);
+                }
+                resultTextArea.setText(stringBuilder1.toString());
+                statusLable.setText("End "+selectedRadioMenuItem);
+                break;
+            case "Decision Tree":
+                int type2=2;
+                CARTScriptPython cartScriptPython1=new CARTScriptPython();
+                TextInputDialog textInputDialog2=new TextInputDialog();
+                textInputDialog2.setTitle("Predict");
+                textInputDialog2.setHeaderText("Choose row you want to predict");
+                textInputDialog2.showAndWait();
+                int stringInput1=Integer.parseInt(textInputDialog2.getEditor().getText());
+                List<String> lists3=cartScriptPython1.runScript("src\\python\\decisiontree\\cart_main.py",type2,stringInput1,result);
+                StringBuilder stringBuilder2=new StringBuilder();
+                for(String temp:lists3){
+                    stringBuilder2.append(temp);
+                }
+                resultTextArea.setText(stringBuilder2.toString());
+                statusLable.setText("End "+selectedRadioMenuItem);
+                break;
+        }
+    }
+
+    public void exportButtonAction(ActionEvent actionEvent) throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter=new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        fileChooser.setTitle("Save result");
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(outputResult.toString());
+            writer.close();
+        }
+    }
 }

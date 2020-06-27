@@ -9,7 +9,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -58,7 +57,7 @@
       </Label>
    </bottom>
    <center>
-      <SplitPane dividerPositions="0.8511705685618729" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -74,7 +73,7 @@
                                              <children>
                                                 <ToolBar prefHeight="40.0" prefWidth="200.0">
                                                   <items>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Input" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Input predict row" />
                                                       <Button fx:id="chooseButton" mnemonicParsing="false" onAction="#chooseButtonAction" text="Choose">
                                                          <font>
                                                             <Font name="Times New Roman" size="12.0" />
@@ -84,6 +83,19 @@
                                                          </padding>
                                                       </Button>
                                                   </items>
+                                                </ToolBar>
+                                                <ToolBar layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
+                                                   <items>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Input test data" />
+                                                      <Button fx:id="testDataButton" mnemonicParsing="false" onAction="#testDataButtonAction" text="Choose">
+                                                         <font>
+                                                            <Font name="Times New Roman" size="12.0" />
+                                                         </font>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                         </padding>
+                                                      </Button>
+                                                   </items>
                                                 </ToolBar>
                                                 <ToolBar prefHeight="40.0" prefWidth="200.0">
                                                    <items>
@@ -100,7 +112,16 @@
                                                             <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                          </padding>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="5.0" right="10.0" />
+                                                         </VBox.margin>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                                <VBox fx:id="ClassificationVbox" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="138.0" prefHeight="200.0" prefWidth="100.0">
+                                                   <children>
+                                                      <Button fx:id="classification" mnemonicParsing="false" onAction="#classificationAction" text="Classification">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" right="10.0" />
                                                          </VBox.margin>
                                                       </Button>
                                                    </children>
@@ -109,7 +130,7 @@
                                                    <children>
                                                       <Button fx:id="accuracyButton" mnemonicParsing="false" onAction="#accuracyButtonAction" text="Calculate Accuracy">
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="5.0" right="10.0" />
                                                          </VBox.margin>
                                                       </Button>
                                                    </children>
@@ -130,7 +151,7 @@
                                        <children>
                                           <BorderPane layoutX="91.0" layoutY="-41.0" prefHeight="147.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <bottom>
-                                                <Button mnemonicParsing="false" text="Export Result" BorderPane.alignment="BOTTOM_RIGHT">
+                                                <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportButtonAction" text="Export Result" BorderPane.alignment="BOTTOM_RIGHT">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                                    </padding>
@@ -154,15 +175,6 @@
                         </AnchorPane>
                     </items>
                   </SplitPane>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="54.0">
-               <children>
-                  <TitledPane animated="false" layoutX="20.0" prefHeight="354.0" prefWidth="66.0" text="Dataset Information" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <content>
-                        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </TitledPane>
                </children>
             </AnchorPane>
         </items>
