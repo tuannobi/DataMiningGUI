@@ -5,6 +5,8 @@ import os
 import numpy as np
 import pandas as pd
 import ast
+from pandas.api.types import is_string_dtype
+from pandas.api.types import is_numeric_dtype
 class Utils:
 
     @staticmethod
@@ -22,9 +24,3 @@ class Utils:
             sum=sum+math.pow(B.getList()[i]- A.getList()[i],2)
         result=math.sqrt(sum)
         return result  
-
-    # @staticmethod
-    # def SplitIntoTrainingAndTestingFile(datasetPath,savePath):
-    #     data=pd.read_csv(datasetPath)    
-    #     from sklearn.model_selection import train_test_split
-    #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)

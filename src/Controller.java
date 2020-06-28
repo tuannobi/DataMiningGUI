@@ -30,6 +30,7 @@ public class  Controller {
     private String result="";
     private StringBuilder outputResult;
     private List<String> inputList;
+    private int k=0;
     @FXML
     private MenuItem importMenuItem;
     @FXML
@@ -52,7 +53,8 @@ public class  Controller {
     private VBox classificationVbox;
     @FXML
     private Button testDataButton;
-
+    @FXML
+    private Button classification;
 
     public void importFileAction(ActionEvent actionEvent) throws IOException {
         FileChooser fileChooser=new FileChooser();
@@ -117,12 +119,14 @@ public class  Controller {
                     }
                     stringBuilder.append("}");
                     //
-                    int isIndex=0;
-                    if(checkBox.isSelected()){
-                        isIndex=1;
-                    }
-                    System.out.println(isIndex);
-                    List<String> resultContent=scriptPython.runScript("src\\python\\knn\\Main.py",stringBuilder.toString(),isIndex);
+                    TextInputDialog textInputDialog6=new TextInputDialog();
+                    textInputDialog6.setTitle("Input");
+                    textInputDialog6.setHeaderText("Input k :");
+                    textInputDialog6.showAndWait();
+                    this.k=Integer.parseInt(textInputDialog6.getEditor().getText());
+                    System.out.println("K="+k);
+                    System.out.println(stringBuilder.toString());
+                    List<String> resultContent=scriptPython.runScript("src\\python\\knn\\Main.py",stringBuilder.toString(),k);
                     StringBuilder resultStringBuilder=new StringBuilder();
                     for(String line:resultContent){
                         resultStringBuilder.append(line);
@@ -215,6 +219,13 @@ public class  Controller {
         selectedRadioMenuItem=radioMenuItem.getText();
         statusLable.setText(selectedRadioMenuItem + " is selected");
         //
+        if(selectedRadioMenuItem.equals("Bayes") || selectedRadioMenuItem.equals("K-nearest Neighbor")){
+            classification.setDisable(true);
+            testDataButton.setDisable(true);
+        }else{
+            classification.setDisable(false);
+            testDataButton.setDisable(false);
+        }
     }
 
     public void chooseButtonAction() throws IOException {
@@ -256,7 +267,23 @@ public class  Controller {
         statusLable.setText("Calculating Accuracy...");
         switch (selectedRadioMenuItem){
             case "K-nearest Neighbor":
-                System.out.println("KNN");
+                ScriptPython scriptPython8=new ScriptPython();
+                if(this.k==0){
+                    TextInputDialog textInputDialog6=new TextInputDialog();
+                    textInputDialog6.setTitle("Input");
+                    textInputDialog6.setHeaderText("Input k :");
+                    textInputDialog6.showAndWait();
+                    this.k=Integer.parseInt(textInputDialog6.getEditor().getText());
+                }
+                List<String> lists8=scriptPython8.runScript("src\\python\\knn\\Accuracy_main.py","kkkk",this.k);
+                StringBuilder stringBuilder8=new StringBuilder();
+                System.out.println(lists8.toString());
+                for(String temp:lists8){
+                    stringBuilder8.append(temp);
+                    stringBuilder8.append("\n");
+                }
+                resultTextArea.setText(stringBuilder8.toString());
+                statusLable.setText("End "+selectedRadioMenuItem);
                 break;
             case "Forest Tree":
                 int type3=3;
@@ -322,7 +349,7 @@ public class  Controller {
     public void classificationAction(ActionEvent actionEvent) {
         switch (selectedRadioMenuItem){
             case "K-nearest Neighbor":
-                System.out.println("KNN");
+
                 break;
             case "Forest Tree":
                 int type=2;

@@ -99,11 +99,11 @@ class KNNAlgorithm:
     #Người dùng có thể nhập vào đường dẫn hoặc DataFrame    
     def runKNNAlgorithm(self,filePath,userRow,k):
         self.__train=pd.read_csv(filePath)
-        # if(isIndex==1):
-        #     self.__train.drop(self.__train.columns[0],axis=1,inplace=True)
-        # self.__k=len(self.__train.index)
-        self._k=int(k)
-        print(int(math.sqrt(self.__k)))
+        if k == 0:
+            self.__k=int(math.sqrt(len(self.__train.index)))
+        else:
+            self.__k=int(k)
+        print("K= ",self.__k)
         # self.__test=pd.read_csv(testfilePath)
         self.__classifyColumn()
         # print('Cột điều kiện: ',self.__conditionColumns)

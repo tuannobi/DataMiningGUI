@@ -1,11 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="DataminingGUI">
-    <output-path>$PROJECT_DIR$/out/artifacts/DataminingGUI</output-path>
+  <artifact type="javafx" name="DataMiningGUI">
+    <output-path>$PROJECT_DIR$/out/artifacts/DataMiningGUI</output-path>
     <properties id="javafx-properties">
       <options>
         <option name="appClass" value="gui.Main" />
         <option name="description" value="" />
         <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
         <option name="title" value="" />
         <option name="vendor" value="" />
         <option name="version" value="" />
@@ -14,7 +15,6 @@
     <root id="root">
       <element id="archive" name="DataMiningGUI.jar">
         <element id="module-output" name="DataMiningGUI" />
-        <element id="library" level="project" name="lib" />
       </element>
     </root>
   </artifact>

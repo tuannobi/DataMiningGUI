@@ -11,10 +11,10 @@ import java.util.List;
 public class ScriptPython {
     Process mProcess;
 
-    public List<String> runScript(String path,String userRow,int isIndex){
+    public List<String> runScript(String path,String userRow,int k){
         Process process;
         try{
-            process = Runtime.getRuntime().exec("python "+path+" "+userRow+" "+isIndex);
+            process = Runtime.getRuntime().exec("python "+path+" "+userRow+" "+k);
 //            process = Runtime.getRuntime().exec("python "+path);
             mProcess = process;
         }catch(Exception e) {
