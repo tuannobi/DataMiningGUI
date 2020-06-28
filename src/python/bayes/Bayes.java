@@ -170,14 +170,6 @@ public class Bayes {
         thuocTinhKetQuaList.addAll(listPhanBiet);
         xacSuatList.addAll(xacSuats);
         tiLeList.addAll(tiLes);
-//        System.out.println(tenCotThuocTinh.toString());
-//        System.out.println(xacSuatList);
-//        System.out.println(tiLeList);
-//        System.out.println(listPhanBiet.toString());
-//        System.out.println(list.toString());
-//        System.out.println(thuocTinhKetQuaList.toString());
-//        System.out.println(xacSuatList.toString());
-//        System.out.println(tiLes.toString());
     }
 
     public StringBuilder runAlgorithm(List<String> inputList) throws IOException {

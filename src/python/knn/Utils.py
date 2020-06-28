@@ -34,5 +34,5 @@ class Utils:
         test = df[~msk]
         print(train)
         print(test)
-        train.to_csv("C:\\Users\\Tuan\\Desktop\\TEst\\train.csv",index="False")
-        test.to_csv("C:\\Users\\Tuan\\Desktop\\TEst\\test.csv",index="False")
+        train.to_csv("C:\\Users\\Tuan\\Desktop\\KNN_daase\\train.csv",index=False)
+        test.to_csv("C:\\Users\\Tuan\\Desktop\\KNN_daase\\test.csv",index=False)

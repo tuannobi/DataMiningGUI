@@ -115,7 +115,7 @@ public class  Controller {
                         stringBuilder.append(list.get(0).get(i));
                         stringBuilder.append("':");
                         System.out.println(list.get(indexRow).get(i));
-                        if (isAlpha(list.get(1).get(i))){
+                        if (list.get(1).get(i).matches("^[a-zA-Z]*$") || list.get(1).get(i).contains("-")){
                             stringBuilder.append("'"+list.get(indexRow).get(i)+"'");
                         }else{
                             stringBuilder.append(list.get(indexRow).get(i));
@@ -134,6 +134,7 @@ public class  Controller {
                     System.out.println("K="+k);
                     System.out.println(stringBuilder.toString());
                     List<String> resultContent=scriptPython.runScript("src\\python\\knn\\Main.py",stringBuilder.toString(),k);
+                    System.out.println(resultContent.toString());
                     StringBuilder resultStringBuilder=new StringBuilder();
                     for(String line:resultContent){
                         resultStringBuilder.append(line);
@@ -408,6 +409,6 @@ public class  Controller {
     }
 
     public boolean isAlpha(String s){
-        return s.chars().allMatch(Character::isLetter);
+        return s.chars().anyMatch(Character::isLetter);
     }
 }

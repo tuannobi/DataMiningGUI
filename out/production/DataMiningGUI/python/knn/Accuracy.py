@@ -17,7 +17,6 @@ class Accuracy:
         resultColumn=test.iloc[:,-1]
         index=0
         numberOfTrue=0
-        # print("With k= ",k)  
         for index, row in conditionColumns.iterrows():
             temp="{"
             for columnName in conditionColumns:
@@ -27,21 +26,12 @@ class Accuracy:
                     temp=temp+"'"+columnName+"':'"+row[columnName]+"',"
             temp=temp+"}"
             temp=temp.replace(",}","}")
-            # print("Dòng hiện tại trong tập test: ",temp)
             knn= KNNAlgorithm()
             # print("Convert: ",Utils.Convert(temp))
             result=knn.runKNNAlgorithm(trainPath,Utils.Convert(temp),k)
-            # print("Kết quả khi áp vào tập train: ",result)
-            # print("Kết quả của tập test: ",resultColumn.iloc[index])
             tempData.loc[index, 'train_result']=result
             tempData.loc[index, 'test_result']=resultColumn.iloc[index]
-            # print(tempData)
-            # if (result==resultColumn.iloc[index]):
-            #     # print("Dòng này đúng")
-            #     numberOfTrue=numberOfTrue+1
-                # print("Sai")
             index=index+1
         comparison_column = np.where(tempData["train_result"] == tempData["test_result"],1,0)
-        # print(comparison_column)
         numberOfTrue=np.count_nonzero(comparison_column==1)
         return numberOfTrue/totalRows
