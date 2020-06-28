@@ -101,6 +101,12 @@ public class  Controller {
                 case "K-nearest Neighbor":
                     ScriptPython scriptPython=new ScriptPython();
                     //
+                    TextInputDialog textInputDialog10=new TextInputDialog();
+                    textInputDialog10.setTitle("Input");
+                    textInputDialog10.setHeaderText("Input index of Row :");
+                    textInputDialog10.showAndWait();
+                    int indexRow=Integer.parseInt(textInputDialog10.getEditor().getText());
+                    //
                     ReadFileUtil readFileUtil=new ReadFileUtil();
                     List<List<String>> list =readFileUtil.getValues();
                     StringBuilder stringBuilder=new StringBuilder("{");
@@ -108,10 +114,11 @@ public class  Controller {
                         stringBuilder.append("'");
                         stringBuilder.append(list.get(0).get(i));
                         stringBuilder.append("':");
-                        if (list.get(1).get(i).matches("^[a-zA-Z]*$")){
-                            stringBuilder.append("'"+list.get(1).get(i)+"'");
+                        System.out.println(list.get(indexRow).get(i));
+                        if (isAlpha(list.get(1).get(i))){
+                            stringBuilder.append("'"+list.get(indexRow).get(i)+"'");
                         }else{
-                            stringBuilder.append(list.get(1).get(i));
+                            stringBuilder.append(list.get(indexRow).get(i));
                         }
                         if(i<list.get(0).size()-1){
                             stringBuilder.append(",");
@@ -221,7 +228,6 @@ public class  Controller {
         //
         if(selectedRadioMenuItem.equals("Bayes") || selectedRadioMenuItem.equals("K-nearest Neighbor")){
             classification.setDisable(true);
-            testDataButton.setDisable(true);
         }else{
             classification.setDisable(false);
             testDataButton.setDisable(false);
@@ -399,5 +405,9 @@ public class  Controller {
             writer.println(outputResult.toString());
             writer.close();
         }
+    }
+
+    public boolean isAlpha(String s){
+        return s.chars().allMatch(Character::isLetter);
     }
 }

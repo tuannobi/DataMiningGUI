@@ -24,3 +24,15 @@ class Utils:
             sum=sum+math.pow(B.getList()[i]- A.getList()[i],2)
         result=math.sqrt(sum)
         return result  
+
+    @staticmethod
+    def train_test_split(dataPath):
+        df = pd.read_csv(dataPath)
+        df['split'] = np.random.randn(df.shape[0], 1)
+        msk = np.random.rand(len(df)) <= 0.7
+        train = df[msk]
+        test = df[~msk]
+        print(train)
+        print(test)
+        train.to_csv("C:\\Users\\Tuan\\Desktop\\TEst\\train.csv",index="False")
+        test.to_csv("C:\\Users\\Tuan\\Desktop\\TEst\\test.csv",index="False")
