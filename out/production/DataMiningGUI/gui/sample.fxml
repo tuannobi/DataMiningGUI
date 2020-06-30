@@ -38,6 +38,7 @@
                   <RadioMenuItem mnemonicParsing="false" onAction="#ratioButtonGroupAction" text="K-nearest Neighbor" toggleGroup="$group" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#ratioButtonGroupAction" text="Forest Tree" toggleGroup="$group" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#ratioButtonGroupAction" text="Bayes" toggleGroup="$group" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#ratioButtonGroupAction" text="Id3" toggleGroup="$group" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">

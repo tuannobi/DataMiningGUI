@@ -213,6 +213,20 @@ public class  Controller {
                     System.out.println("ket thuc");
                     statusLable.setText("End "+selectedRadioMenuItem);
                     break;
+                case "Id3":
+                    ScriptPython scriptPython5=new ScriptPython();
+                    List<String> resultContent20=scriptPython5.runScript("src\\python\\id3\\id3_main.py"," ",0);
+                    System.out.println(resultContent20.toString());
+                    StringBuilder resultStringBuilder20=new StringBuilder();
+                    for(String line:resultContent20){
+                        resultStringBuilder20.append(line);
+                        resultStringBuilder20.append("\n");
+                    }
+                    outputResult=new StringBuilder(resultStringBuilder20);
+                    resultTextArea.setText(resultStringBuilder20.toString());
+                    statusLable.setText("End "+selectedRadioMenuItem);
+                    System.out.println("Ket thuc");
+                    break;
             }
         }
 
@@ -227,11 +241,21 @@ public class  Controller {
         selectedRadioMenuItem=radioMenuItem.getText();
         statusLable.setText(selectedRadioMenuItem + " is selected");
         //
-        if(selectedRadioMenuItem.equals("Bayes") || selectedRadioMenuItem.equals("K-nearest Neighbor")){
+        classification.setDisable(false);
+        testDataButton.setDisable(false);
+        accuracyButton.setDisable(false);
+        if(selectedRadioMenuItem.equals("Bayes")){
             classification.setDisable(true);
-        }else{
-            classification.setDisable(false);
-            testDataButton.setDisable(false);
+            testDataButton.setDisable(true);
+            accuracyButton.setDisable(true);
+        }
+        if(selectedRadioMenuItem.equals("K-nearest Neighbor")){
+            classification.setDisable(true);
+        }
+        if(selectedRadioMenuItem.equals("Id3")){
+            classification.setDisable(true);
+            testDataButton.setDisable(true);
+            accuracyButton.setDisable(true);
         }
     }
 
